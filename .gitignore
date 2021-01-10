@@ -30,3 +30,6 @@
 *.exe
 *.out
 *.app
+/gsp_algorythm/.vs/gsp_algorythm/*
+/gsp_algorythm/Debug/*
+/gsp_algorythm/gsp_algorythm/Debug/*
