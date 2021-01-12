@@ -172,27 +172,38 @@ void cleanCandidates(std::vector<Candidate> &candidatesVector, const std::vector
 	}
 }
 
-int main() {
-	auto data = load("data1.txt");
-	unsigned minimumSupport = 2;
+std::vector<Candidate> gsp(std::string filename, unsigned minimalSupport) {
+	auto data = load(filename);
 	std::vector<Candidate> result;
-	auto candidatesVector = findItems(data);
-	countSupport(data, candidatesVector);
-	removeLowSupportCandidates(candidatesVector, minimumSupport);
-	addToResult(result, candidatesVector);
-	std::vector<Candidate> previousLengthSequences = candidatesVector;
+	std::vector<Candidate> previousLengthSequences;
+	unsigned iterations = 1; //also candidates-sequence length
+	std::vector<Candidate> candidatesVector;
 
-	candidatesVector = generateCandidates(previousLengthSequences);
-	countSupport(data, candidatesVector);
-	removeLowSupportCandidates(candidatesVector, minimumSupport);
-	addToResult(result, candidatesVector);
-	previousLengthSequences = candidatesVector;
+	while (true) {
+		if (iterations == 1)
+			candidatesVector = findItems(data);
+		else
+			candidatesVector = generateCandidates(previousLengthSequences);
+		if (candidatesVector.size() == 0)
+			break;
+		if (iterations >= 3)
+			cleanCandidates(candidatesVector, previousLengthSequences);
+		if (candidatesVector.size() == 0)
+			break;
+		countSupport(data, candidatesVector);
+		removeLowSupportCandidates(candidatesVector, minimalSupport);
+		if (candidatesVector.size() == 0)
+			break;
+		addToResult(result, candidatesVector);
+		previousLengthSequences = candidatesVector;
+		++iterations;
+	}
+	return result;
+}
 
-	candidatesVector = generateCandidates(previousLengthSequences);
-	cleanCandidates(candidatesVector, previousLengthSequences);
-	countSupport(data, candidatesVector);
-	addToResult(result, candidatesVector);
-
-	//printCandidates(candidatesVector);
+int main() {
+	std::string filename = "data2.txt";
+	unsigned minimalSupport = 2;
+	auto result = gsp(filename, minimalSupport);
 	printCandidates(result);
 }

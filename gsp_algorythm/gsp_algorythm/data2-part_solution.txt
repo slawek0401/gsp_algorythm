@@ -1,0 +1,25 @@
+a b c f g g e
+a d c b a b e f
+a b f g e
+b f g
+
+a 3
+b 3
+c 2
+e 3
+f 4
+g 3
+ab 3
+ac 2 
+ae 3
+af 3
+ag 2
+be 3
+bf 4
+bg 3
+ge 2
+
+abg 2
+bge 2
+
+abge 
